@@ -21,7 +21,7 @@ namespace resolution
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore();
+            services.AddMvcCore().AddJsonFormatters();
         }
     }
 }
