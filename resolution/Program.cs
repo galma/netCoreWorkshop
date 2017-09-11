@@ -11,9 +11,8 @@ namespace resolution
         static void Main(string[] args)
         {
             var host = new WebHostBuilder()
-                .UseKestrel()
-                .Configure(app => app.Run(context => context.Response.WriteAsync("Hello World, from ASP.NET!"))) 
-                //.UseStartup<Startup>()
+                .UseKestrel()                
+                .UseStartup<Startup>()
                 //.UseIISIntegration() 
                 //.UseContentRoot(Directory.GetCurrentDirectory()) //  The server’s content root determines where it searches for content files, like MVC View files. The default content 
                 .Build();
