@@ -4,11 +4,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace resolution
 {
     class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder() // Collection of sources for read/write key/value pairs
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appSettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables(); // Overrides environment variables with valiues from config files/etc
+            Configuration = builder.Build();
+        }
         // This method gets called by the runtime, after ConfigureServices, and is required. Use this method to configure the HTTP request pipeline.
         // IApplicationBuilder is required; provides the mechanisms to configure an application’s request pipeline.
         // Middleware is configured here.
