@@ -116,19 +116,23 @@
 </code></pre></li>
 <li><p>Change the BuildWebHost method in Program.cs to this:</p>
 
-<pre><code>public static IWebHost BuildWebHost(string[] args){
-            var config = new ConfigurationBuilder()  
+<pre><code>
+    static void Main(string[] args)
+    {
+        var config = new ConfigurationBuilder()  
             .AddCommandLine(args)
             .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()                               
-                .UseStartup<Startup>()      
-                .UseIISIntegration()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(config)
-                .Build();
-        }
+        var host = new WebHostBuilder()
+            .UseKestrel()                
+            .UseStartup<Startup>()
+            .UseIISIntegration() 
+            .UseContentRoot(Directory.GetCurrentDirectory()) //  The server’s content root determines where it searches for content files, like MVC View files. The default content 
+            .UseConfiguration(config)
+            .Build();
+
+        host.Run();
+    }
 </code></pre></li>
 
 
