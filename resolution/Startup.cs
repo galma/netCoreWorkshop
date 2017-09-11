@@ -12,9 +12,17 @@ namespace resolution
         // This method gets called by the runtime, after ConfigureServices, and is required. Use this method to configure the HTTP request pipeline.
         // IApplicationBuilder is required; provides the mechanisms to configure an application’s request pipeline.
         // Middleware is configured here.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseMvc();
+            app.Run((context) =>
+            {
+                throw new InvalidOperationException("Oops!");
+            });
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
