@@ -145,17 +145,15 @@
 
 <pre><code>// Minimal ASP.NET setup in Main method
 
-static void Main(string[] args)
-{
-	BuildWebHost(args).Run();
-}
+    static void Main(string[] args)
+    {
+        var host = new WebHostBuilder()
+            .UseKestrel()
+            .Configure(app => app.Run(context => context.Response.WriteAsync("Hello World, from ASP.NET!")))             
+            .Build();
 
-public static IWebHost BuildWebHost(string[] args) =>
-	WebHost.CreateDefaultBuilder(args)
-		.UseKestrel()               
-		.Configure(app => app.Run(context => context.Response.WriteAsync("Hello World!"))) 
-		//.UseStartup<Startup>()                
-		.Build();
+        host.Run();
+    }
 
 
 // NOTE, these are needed and can be added manually, though you can use the IDE (if VS Code + C# extension, or VS)
