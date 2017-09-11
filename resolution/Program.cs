@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace resolution
 {
@@ -13,7 +14,7 @@ namespace resolution
         static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()  
-                .AddCommandLine(args)
+                .AddCommandLine(args)                
                 .Build();
 
             var host = new WebHostBuilder()
@@ -21,7 +22,7 @@ namespace resolution
                 .UseStartup<Startup>()
                 .UseIISIntegration() 
                 .UseContentRoot(Directory.GetCurrentDirectory()) //  The server’s content root determines where it searches for content files, like MVC View files. The default content 
-                .UseConfiguration(config)
+                .UseConfiguration(config)                
                 .Build();
 
             host.Run();

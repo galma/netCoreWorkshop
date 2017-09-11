@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace resolution
 {
@@ -12,7 +14,7 @@ namespace resolution
     {
         public IConfigurationRoot Configuration { get; }
         public Startup(IHostingEnvironment env)
-        {
+        {            
             var builder = new ConfigurationBuilder() // Collection of sources for read/write key/value pairs
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true)
@@ -23,17 +25,27 @@ namespace resolution
         // This method gets called by the runtime, after ConfigureServices, and is required. Use this method to configure the HTTP request pipeline.
         // IApplicationBuilder is required; provides the mechanisms to configure an application’s request pipeline.
         // Middleware is configured here.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {            
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));                  
+
+            var startupLogger = loggerFactory.CreateLogger<Startup>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseMvc();
-            app.Run((context) =>
-            {
-                throw new InvalidOperationException("Oops!");
-            });
+            // app.Run((context) =>
+            // {
+            //     throw new InvalidOperationException("Oops!");
+            // });
+
+            startupLogger.LogTrace("Trace test output!");
+            startupLogger.LogDebug("Debug test output!");
+            startupLogger.LogInformation("Info test output!");            
+            startupLogger.LogError("Error test output!");
+            startupLogger.LogCritical("Trace test output!");
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
