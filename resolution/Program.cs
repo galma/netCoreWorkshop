@@ -13,19 +13,18 @@ namespace resolution
     {
         static void Main(string[] args)
         {
-            var config = new ConfigurationBuilder()  
-                .AddCommandLine(args)                
-                .Build();
+           BuildWebHost(args).Run();
+        }
 
-            var host = new WebHostBuilder()
-                .UseKestrel()                
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseConfiguration(new ConfigurationBuilder()  
+                    .AddCommandLine(args)
+                    .Build())
+                .UseKestrel()
                 .UseStartup<Startup>()
                 .UseIISIntegration() 
                 .UseContentRoot(Directory.GetCurrentDirectory()) //  The server’s content root determines where it searches for content files, like MVC View files. The default content 
-                .UseConfiguration(config)                
                 .Build();
-
-            host.Run();
-        }
     }
 }

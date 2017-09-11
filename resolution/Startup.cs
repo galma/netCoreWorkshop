@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.EntityFrameworkCore;
 
 namespace resolution
 {
@@ -52,6 +53,10 @@ namespace resolution
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ArticlesContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("Articles"));
+            });
             services.AddMvcCore().AddJsonFormatters();
         }
     }
